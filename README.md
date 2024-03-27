@@ -1,3 +1,5 @@
+********Please read this in Code view for better formatting*****************
+
 *****Below instructions are taken from many online resouces over a perion of 1 week. Thanks to everyone on Internet******
 
 *****Aim of this project*******
@@ -14,11 +16,8 @@
 *******set host name for master & worker
 
 sudo hostnamectl set-hostname "master-node"
-
 sudo hostnamectl set-hostname "worker1-node"
-
 sudo hostnamectl set-hostname "worker2-node"
-
 sudo hostnamectl set-hostname "worker3-node"
 
 
@@ -31,11 +30,8 @@ sudo nano /etc/hosts
 
 *******Host table
 192.168.68.127 master-node
-
 192.168.68.125 worker1-node
-
 192.168.68.127 worker2-node
-
 192.168.68.129 worker3-node
 
 ********ping master-node from 1 or 2 worker node
@@ -75,27 +71,20 @@ sudo sysctl --system
 *********Containerd run time
 
 sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
-
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
-
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
 sudo apt update
 
 sudo apt install -y containerd.io
 
-
 containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
-
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-
 sudo systemctl restart containerd
-
 sudo systemctl enable containerd
 
 
-***********Install Kubernetes  
-*********This must be the latest Kubernetes version
+***********Install Kubernetes**************  
+*********This must be the latest Kubernetes version***************
 
 sudo mkdir /etc/apt/keyrings
 
@@ -110,9 +99,7 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 sudo apt-get update
-
 sudo apt-get install -y kubelet kubeadm kubectl
-
 sudo apt-mark hold kubelet kubeadm kubectl
 
 #Only for master node - Start the kubeadm server
@@ -124,13 +111,11 @@ sudo kubeadm init \
 #from instructions in startup.....
 
 mkdir -p $HOME/.kube
-
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-#Please copy the join instructions
-------------------------------------------------------------------
+*************Please copy the join instructions for joining workers***********
+
 You can now join any number of control-plane nodes by copying certificate authorities
 and service account keys on each node and then running the following as root:
 
@@ -141,15 +126,13 @@ and service account keys on each node and then running the following as root:
 Then you can join any number of worker nodes by running the following on each as root:
 
 sudo kubeadm join master-node:6443 --token 1nehga.tu2ekk3eg64q6zpd --discovery-token-ca-cert-hash sha256:848a1f4248c874b0225048f68aa1ab3e937173dcf9432d97ade6e0e79b810b80 --ignore-preflight-errors=Port-10250
---------------------------------------------------------------------------------
+******************************************************************************
 
 kubectl cluster-info
-
 kubectl get nodes
 
 
 #Go to worker node and join the workers
-
 **************Please use your join key*********************
 kubeadm join master-node:6443 --token r6whxl.zvok1oldzghydhj5 \
         --discovery-token-ca-cert-hash sha256:0ae2a4df389cc6c8a318bb46a448fcc279fae6f23a64c8df25800f95450a5a37
@@ -159,11 +142,8 @@ kubeadm join master-node:6443 --token r6whxl.zvok1oldzghydhj5 \
 kubectl get nodes
 
 NAME                          STATUS     ROLES           AGE   VERSION
-
 k8s-master.nvtienanh.local    NotReady   control-plane   58m   v1.26.1
-
 k8s-worker1.nvtienanh.local   NotReady   <none>          87s   v1.26.1
-
 k8s-worker2.nvtienanh.local   NotReady   <none>          44s   v1.26.1
 
 #we have to install Calico pod network in Master
@@ -212,20 +192,6 @@ worker1-node   Ready    <none>          19m   v1.29.3
 worker2-node   Ready    <none>          19m   v1.29.3
 
 
-
-
-***********Note - Incase of incorrect install commands to completely remove kubeadm***************
-kubeadm reset
-sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*   
-sudo apt-get autoremove  
-sudo rm -rf ~/.kube
-
-************Clean cluster to join to new master*********************
-
-sudo rm /etc/kubernetes/kubelet.conf
-sudo rm /etc/kubernetes/pki/ca.crt
-sudo systemctl restart kubelet
-
 ***************create NGINX deployment nginx.yaml***********
 
 apiVersion: apps/v1
@@ -272,10 +238,22 @@ nginx-deployment   NodePort   10.99.138.94   <none>        80:30145/TCP   4h30m
 
 access from any PC using the master IP address
 
+
+***********Incase of incorrect install commands to completely remove K8S instance***************
+kubeadm reset
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*   
+sudo apt-get autoremove  
+sudo rm -rf ~/.kube
+
+************Clean cluster to join to new master*********************
+sudo rm /etc/kubernetes/kubelet.conf
+sudo rm /etc/kubernetes/pki/ca.crt
+sudo systemctl restart kubelet
+
+
+**********Notes ignore**************
 nginx-deploy-86dcfdf4c6-m9xnb
-
 kubectl delete all --all --namespace default
-
 kubectl get services kube-dns --namespace=kube-system
 kubectl get secrets
 
@@ -298,7 +276,7 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 COPY ./dist/app /usr/share/nginx/html
 
-
+please save as Dockerfile without any extension
 
 
 *********index.html*********** 
@@ -309,7 +287,7 @@ path    /dist/app
 <html>
  <body style="backgroud-color:rgb(49, 214, 220);"><center>
     <head>
-     <title>Prabhu Projects</title>
+     <title>My Projects</title>
     </head>
     <body>
      <p>Welcome to my Docker Project!<p>
@@ -324,7 +302,7 @@ path    /dist/app
    
 *********On docker desktop************* 
 docker build -t nginxr:latest .
-
+*****************Run on local machine and get webpage by http://localhost:8080************
 docker run -d -p 8080:80 nginxr
 
 *****Instruction to push from Docker desktop to online Dockerhub***********
