@@ -5,7 +5,7 @@
 2) Install latest Kubernetes version
 3) Download Nginx from Github
 4) Modify Nginx index.html and upload to personal github
-5) 
+
 
 ******************************
 
