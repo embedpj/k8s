@@ -31,8 +31,11 @@ sudo nano /etc/hosts
 
 *******Host table
 192.168.68.127 master-node
+
 192.168.68.125 worker1-node
+
 192.168.68.127 worker2-node
+
 192.168.68.129 worker3-node
 
 ********ping master-node from 1 or 2 worker node
@@ -43,7 +46,9 @@ sudo swapoff -a
 free -h
 
 sudo nano /etc/fstab
+
 *******Comment Swap ***********
+
 #/swap.img       none       swap       sw       0       0
 
 sudo mount -a && free -h
@@ -55,6 +60,7 @@ EOF
 
 
 sudo modprobe overlay
+
 sudo modprobe br_netfilter
 
 
