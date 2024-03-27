@@ -4,9 +4,10 @@
 
 *****Aim of this project*******
 1) Set up one master and 3 worker on windows laptop running VirtualBox running UBUNTU server
-2) Install latest Kubernetes version
-3) Download Nginx from Github
-4) Modify Nginx index.html and upload to personal github
+2) Master 2 cpu and 2048ram, worker 1cpu and 1024ram.
+3) Install latest Kubernetes version
+4) Download Nginx from Github
+5) Modify Nginx index.html and upload to personal github
 
 
 ******************************
