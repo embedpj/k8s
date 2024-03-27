@@ -75,14 +75,22 @@ sudo sysctl --system
 *********Containerd run time
 
 sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
+
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
 sudo apt update
+
 sudo apt install -y containerd.io
 
+
 containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
+
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+
 sudo systemctl restart containerd
+
 sudo systemctl enable containerd
 
 
@@ -102,7 +110,9 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 sudo apt-get update
+
 sudo apt-get install -y kubelet kubeadm kubectl
+
 sudo apt-mark hold kubelet kubeadm kubectl
 
 #Only for master node - Start the kubeadm server
@@ -112,8 +122,11 @@ sudo kubeadm init \
   --control-plane-endpoint=master-node    *--*our host name
 
 #from instructions in startup.....
+
 mkdir -p $HOME/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #Please copy the join instructions
@@ -131,6 +144,7 @@ sudo kubeadm join master-node:6443 --token 1nehga.tu2ekk3eg64q6zpd --discovery-t
 --------------------------------------------------------------------------------
 
 kubectl cluster-info
+
 kubectl get nodes
 
 
@@ -145,8 +159,11 @@ kubeadm join master-node:6443 --token r6whxl.zvok1oldzghydhj5 \
 kubectl get nodes
 
 NAME                          STATUS     ROLES           AGE   VERSION
+
 k8s-master.nvtienanh.local    NotReady   control-plane   58m   v1.26.1
+
 k8s-worker1.nvtienanh.local   NotReady   <none>          87s   v1.26.1
+
 k8s-worker2.nvtienanh.local   NotReady   <none>          44s   v1.26.1
 
 #we have to install Calico pod network in Master
