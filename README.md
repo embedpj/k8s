@@ -14,8 +14,11 @@
 *******set host name for master & worker
 
 sudo hostnamectl set-hostname "master-node"
+
 sudo hostnamectl set-hostname "worker1-node"
+
 sudo hostnamectl set-hostname "worker2-node"
+
 sudo hostnamectl set-hostname "worker3-node"
 
 
